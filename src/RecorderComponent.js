@@ -16,7 +16,7 @@ class RecorderComponent extends Component {
             microphoneState: 1,          // 初始化进入时麦克风的状态 1为默认准备录音状态 2为正在录音的状态 3为录音结束状态 4为正在播放状态 5为暂停播放状态
             recorderTime: 0,             // 录音计时
             playRecorderTime: 0,           // 播放录音计时
-            recorderCountdown: 11,             // 用于显示录音倒计时 可根据需要调整  例如从10开始倒计时则设置为11
+            recorderCountdown: this.props.recorderCountdown + 1,             // 用于显示录音倒计时 可根据需要调整  例如从10开始倒计时则设置为11
             blobFile: null              // 录音文件
         };
         this.recorder = null;
@@ -30,7 +30,10 @@ class RecorderComponent extends Component {
     timePauseSetInterval
 
     static defaultProps = {
-        getAudioFile: (file, recorderTime) => { console.log('录音文件:', file) }                      // 录音结束的回调
+        getAudioFile: (file, recorderTime) => { console.log('录音文件:', file) },                      // 录音结束的回调
+        maxTime: 5,                                       // 允许最长录音时间  单位分钟
+        recorderCountdown: 10,                              // 录音结束倒计时从几秒开始
+        showRecorderCountdown: true
     }
 
     // 初始化录音功能
@@ -119,7 +122,7 @@ class RecorderComponent extends Component {
                     this.setState({
                         recorderTime: this.state.recorderTime + 1
                     }, () => {
-                        if (this.state.recorderTime >= 290) {
+                        if (this.state.recorderTime >= (this.props.maxTime * 60)) {
                             this.setState({
                                 recorderCountdown: this.state.recorderCountdown - 1
                             }, () => {
@@ -222,7 +225,7 @@ class RecorderComponent extends Component {
             microphoneState: 1,
             recorderTime: 0,
             playRecorderTime: 0,
-            recorderCountdown: 11,
+            recorderCountdown: this.props.recorderCountdown,
             blobFile: null
         }, () => {
             this.props.getAudioFile(this.state.blobFile)
@@ -264,13 +267,13 @@ class RecorderComponent extends Component {
                     }
                     <span className='recorder-text'>
                         {
-                            this.state.microphoneState === 1 && '最长可录音5分钟'
+                            this.state.microphoneState === 1 && `最长可录音${this.props.maxTime}分钟`
                         }
                         {
                             (this.state.microphoneState === 2 || this.state.microphoneState === 3) && this.handleFormattingTime(this.state.recorderTime)
                         }
                         {
-                            this.state.recorderCountdown < 11 && this.state.recorderCountdown > 0 && <span className='recorder-countdown'>录音结束倒计时{this.state.recorderCountdown}</span>
+                            this.props.showRecorderCountdown && this.state.recorderCountdown < (this.props.recorderCountdown + 1) && this.state.recorderCountdown > 0 && <span className='recorder-countdown'>录音结束倒计时{this.state.recorderCountdown}</span>
                         }
                         {
                             (this.state.microphoneState === 4 || this.state.microphoneState === 5) && this.handleFormattingTime(this.state.playRecorderTime)
@@ -286,6 +289,9 @@ class RecorderComponent extends Component {
 }
 
 RecorderComponent.propTypes = {
-    getAudioFile: PropTypes.func
+    getAudioFile: PropTypes.func,
+    maxTime: PropTypes.number,
+    recorderCountdown: PropTypes.number,
+    showRecorderCountdown: PropsTypes.bool
 }
 export default CSSModules(RecorderComponent, styles);
