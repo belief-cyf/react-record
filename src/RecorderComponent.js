@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 import {Button} from 'antd';
 import { PropTypes } from 'prop-types';
-import Recorder from '../../public/js/recorder';
+import Recorder from '../lib/recorder';
 import CSSModules from 'react-css-modules';
 import styles from './RecorderComponent.scss';
 
