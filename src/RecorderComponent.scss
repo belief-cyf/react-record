@@ -1,0 +1,79 @@
+@keyframes :global(corrugated) {
+    from {
+        width: 50px;
+        height: 50px;
+        opacity: 1;
+        top: 0;
+        left: 0;
+    }
+
+    to {
+        width: 74px;
+        height: 74px;
+        opacity: 0;
+        transform: translate(-12px, -12px);
+    }
+}
+
+.recorder {
+    :global {
+        .recorder-box {
+            position: relative;
+
+            .recorder-text {
+                text-align: center;
+                color: #999;
+                font-size: 14px;
+                line-height: 50px;
+                position: absolute;
+                left: 70px;
+                top: 0;
+
+                .recorder-again-btn {
+                    border-color: #7dd67f;
+                    color: #7dd67f;
+                    width: 58px;
+                    height: 18px;
+                    margin-left: 60px;
+                    border-radius: 2px;
+                }
+
+                .recorder-countdown {
+                    margin-left: 20px;
+                    color: #999;
+                }
+            }
+
+            .microphone-box {
+                width: 50px;
+                height: 50px;
+                background-color: #7dd67f;
+                border-radius: 50%;
+                text-align: center;
+                line-height: 48px;
+                cursor: pointer;
+                position: relative;
+
+                .corrugated {
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    top: 0;
+                    left: 0;
+                    border-radius: 50%;
+                    border: 1px solid #7dd67f;
+                    animation: corrugated 1.8s infinite linear;
+                }
+
+                .iconfont {
+                    color: #fff;
+                    font-size: 28px;
+                }
+
+                .icon-luyinzanting1 {
+                    font-size: 50px;
+                }
+            }
+        }
+    }
+}
